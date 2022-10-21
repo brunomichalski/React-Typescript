@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { ButtonLogin } from "./components/ButtonLogin";
+import { InputLogin } from "./components/InputLogin";
 
 export const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const inputPasswordRef = useRef<HTMLInputElement>(null);
 
     const handleEntrar = () => {
         console.log(email);
@@ -12,26 +16,26 @@ export const Login = () => {
     return (
         <div>
             <form action="">
-                <label htmlFor="">
-                    <span>Email</span>
-                    <input
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </label>
+                <InputLogin
+                    label="Email"
+                    value={email}
+                    onChange={(newValue) => setEmail(newValue)}
+                    onPressEnter={() => inputPasswordRef.current?.focus()}
+                />
 
-                <label htmlFor="">
-                    <span>Senha</span>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </label>
+                <InputLogin
+                    label="Senha"
+                    value={password}
+                    type="password"
+                    ref={inputPasswordRef}
+                    onChange={(newValue) => setPassword(newValue)}
+                />
 
-                <button type="button" onClick={handleEntrar}>
-                    Entrar
-                </button>
+                <ButtonLogin
+                    type="button"
+                    onClick={handleEntrar}
+                    children="Entrar"
+                />
             </form>
         </div>
     );
