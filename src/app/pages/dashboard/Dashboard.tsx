@@ -3,7 +3,7 @@ import { useUsuarioLogado } from "../../shared/hooks";
 
 export const Dashboard = () => {
 
-    const {nomeUsuario} = useUsuarioLogado()
+    const {nomeUsuario, logout} = useUsuarioLogado()
 
     return (
         <div>
