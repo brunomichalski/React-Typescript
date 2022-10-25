@@ -2,8 +2,8 @@ import { Routes } from "./routes";
 import { UsuarioLogadoProvider } from "./shared/contexts";
 
 export const App = () => {
-    return
+    return(
     <UsuarioLogadoProvider>
         <Routes />;
-    </UsuarioLogadoProvider>
+    </UsuarioLogadoProvider>)
 };
