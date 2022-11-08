@@ -35,10 +35,30 @@ export const Dashboard = () => {
                         })
                     }
                 })
-
-
         }
     }, [])
+
+    const handleToggleComplete = useCallback((id: number) => {
+
+        const tarefaUpdate = lista.find((tarefa) => tarefa.id === id)
+        if (!tarefaUpdate) return
+
+        TarefasService.updateById(id, { ...tarefaUpdate, isCompleted: !tarefaUpdate.isCompleted })
+            .then((result) => {
+                if (result instanceof ApiException) {
+                    alert(result.message)
+                } else {
+                    setLista(oldLista => {
+                        return oldLista.map(oldListitem => {
+                            if (oldListitem.id === id) return result;
+                            return oldListitem;
+                        })
+                    })
+                }
+            })
+
+
+    }, [lista]);
 
     return (
         <div>
@@ -50,20 +70,7 @@ export const Dashboard = () => {
                     return <li key={ListItem.id}>
                         <input type="checkbox"
                             checked={ListItem.isCompleted}
-                            onChange={() => {
-                                setLista(oldLista => {
-                                    return oldLista.map(oldListitem => {
-                                        const newIsCompleted = oldListitem.title === ListItem.title
-                                            ? !oldListitem.isCompleted
-                                            : oldListitem.isCompleted
-
-                                        return {
-                                            ...oldListitem,
-                                            isCompleted: newIsCompleted
-                                        }
-                                    })
-                                })
-                            }} />
+                            onChange={() => { handleToggleComplete(ListItem.id) }} />
                         {ListItem.title}
                     </li>
                 })}
