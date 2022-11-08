@@ -7,14 +7,15 @@ export const Dashboard = () => {
 
     useEffect(() => {
         TarefasService.getAll()
-        .then((result)=>{
-            if (result instanceof ApiException) {
-                alert(result.message)
-            }else{
-                setLista(result)
-            }
-        })
+            .then((result) => {
+                if (result instanceof ApiException) {
+                    alert(result.message)
+                } else {
+                    setLista(result)
+                }
+            })
     }, [])
+
 
     const handleInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = useCallback((e) => {
         if (e.key === 'Enter') {
@@ -22,15 +23,20 @@ export const Dashboard = () => {
 
             const value = e.currentTarget.value
             e.currentTarget.value = '';
-            setLista((oldLista) => {
-                if (oldLista.some((ListItem) => ListItem.title === value)) return oldLista
 
-                return [...oldLista, {
-                    title: value,
-                    isCompleted: false,
-                    id: oldLista.length
-                }]
-            })
+            TarefasService.create({ title: value, isCompleted: false })
+                .then((result) => {
+                    if (result instanceof ApiException) {
+                        alert(result.message)
+                    } else {
+                        setLista((oldLista) => {
+                            if (oldLista.some((ListItem) => ListItem.title === value)) return oldLista
+                            return [...oldLista, result]
+                        })
+                    }
+                })
+
+
         }
     }, [])
 
